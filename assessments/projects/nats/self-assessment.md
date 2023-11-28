@@ -56,6 +56,9 @@ Traditional messaging and communication methods in distributed systems often fac
 As an open-source project under the Cloud Native Computing Foundation (CNCF), NATS prioritizes simplicity, performance, scalability, and ease of use. Its server, written in Go, and client libraries, available in multiple programming languages, make NATS a versatile platform for secure, multi-tenant communication across various environments. It is well-suited for both small and large-scale applications. The self-healing and scalable nature of NATS allows for dynamic adjustments to system topology, ensuring uninterrupted operation.
 
 ![NATS Diagram](./images/NATS_Figure_1_Image.jpg)
+
+
+
 Figure 1: Messaging Design via NATS Documentation [uploaded as a seperate image in folder]
 
 NATS uses subject-based messaging in its publish-subscribe model, where messages are routed by subjects - simple string identifiers. This method allows publishers to send messages to specific subjects and subscribers to express interest in particular subjects, enhancing communication flexibility. The system's ability to handle wildcard subscriptions further allows subscribers to receive messages from a range of related subjects. This decoupling of publishers and subscribers, central to NATS' scalable architecture, is particularly advantageous in cloud and microservices environments. Efficient message routing, combined with the system's simplicity and ease of use, positions NATS as a robust solution for the dynamic needs of modern distributed systems.
