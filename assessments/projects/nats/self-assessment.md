@@ -1,5 +1,5 @@
 # Self-assessment
-The Self-assessment is the initial document for projects to begin thinking about the
+The Self-assessment is the initial document for the NATS project to begin thinking about the
 security of the project, determining gaps in their security, and preparing any security
 documentation for their users. This document is ideal for projects currently in the
 CNCF **sandbox** as well as projects that are looking to receive a joint assessment and
@@ -33,7 +33,7 @@ A table at the top for quick reference information, later used for indexing.
 | Software |  https://github.com/nats-io/nats-server |
 | Security Provider | No  |
 | Languages | 99.6% GO 0.4% Other |
-| SBOM | Software bill of materials.  Link to the libraries, packages, versions used by the project, may also include direct dependencies. |
+| SBOM | assessments/projects/nats/doc/SBOM report.html |
 | | |
 
 ### Security links
@@ -99,7 +99,7 @@ These include tools for monitoring, managing, and configuring NATS servers and c
 
 In the NATS messaging system, actions are the steps performed by different actors to provide specific services or functionalities. These actions are not overly detailed at the function call level but focus on security checks, use of sensitive data, and interactions between actors. We can examine these actions at both the Core NATS and JetStream levels.
 
-#### Core NATS Actions
+## Core NATS Actions
 **Publish/Subscribe:**
 - Publishers send messages on subjects, and any active subscriber listening to those subjects receives the messages. The simplicity of this model, with ‘at most once' quality of service, reduces the complexity of security checks.
 - Messages in NATS consist of a subject, a payload (in the form of a byte array), optional header fields, and an optional 'reply' address field. The maximum size of messages can be configured in the server settings, with a default of 1 MB, which can be increased if necessary.
@@ -112,7 +112,7 @@ In the NATS messaging system, actions are the steps performed by different actor
 - Queue groups in NATS are used for load balancing and ensuring that messages are distributed among multiple subscribers in a controlled manner.
 - Subscribers can register as part of a queue group. When a message is sent to a subject associated with a queue group, only one subscriber from the group is randomly chosen to consume the message. This distributed queue mechanism enables built-in load balancing within NATS.
 
-#### JetStream Actions
+## JetStream Actions
 JetStream extends Core NATS functionalities with enhanced qualities of service and new features.
 
 - **Streaming:** JetStream provides temporal decoupling between publishers and subscribers, allowing subscribers to receive messages published even when they were not actively connected, overcoming the limitations of basic pub/sub systems.
@@ -130,7 +130,7 @@ JetStream extends Core NATS functionalities with enhanced qualities of service a
 ### Goals
 The intended goals of the projects including the security guarantees the project is meant to provide (e.g., Flibble only allows parties with an authorization key to change data it stores).
 
-#### General Goals
+## General Goals
 - **Effortless M:N Connectivity:** NATS manages addressing and discovery based on subjects and not hostname and ports.
 - **Deploy Anywhere:** NATS can be deployed nearly anywhere. It runs well within deployment frameworks or without.
 - **Secure:** NATS is secure by default and makes no requirements on network perimeter security models. NATS supports basic security features: authentication, authorization, and encryption (TLS).
@@ -138,7 +138,7 @@ The intended goals of the projects including the security guarantees the project
 - **Hybrid Deployments:** NATS allows a hybrid mix of SaaS/Utility computing with separately owned and operated systems. NATS service can be shared with core microservices, streams, and stream processing.
 - **Adaptability:** NATS will work as modern systems unify cloud, Edge, IoT, and beyond.
 
-#### Security Goals
+## Security Goals
 - **Encryption:** NATS servers support TLS encryption for secure connections, ensuring that data in transit is protected against interception and unauthorized access.
 - **Authentication:** Client connections to NATS servers can be secured using various authentication methods, including username/password, tokens, TLS certificates, and more, to validate client identities.
 - **Authorization:** NATS provides mechanisms for clients to require authorization for the subjects they wish to publish or subscribe to, adding an additional layer of security and control over message access.
@@ -148,35 +148,27 @@ The intended goals of the projects including the security guarantees the project
 
 ### Non-goals
 
-#### General
+## General
 - **Message Storage Limitations:** While NATS JetStream offers message persistence features, NATS does not aim to provide unlimited message storage. There are practical limits to storage capacity, and the system is not designed to serve as an indefinite or long-term data storage solution.
 - **Delivery Model of Core NATS:** Core NATS operates on an "at most once" delivery model, similar to TCP/IP. It is not designed to guarantee message delivery if the subscriber is not actively listening or if there's no subject match. The responsibility for ensuring message receipt in such scenarios is not a goal of Core NATS.
 - **Suitability for Real-Time Monitoring or Complex Event Processing:** NATS is focused on efficient message passing and may not be suitable as a real-time monitoring or complex event processing system. While it can be part of such systems, it does not inherently provide complex analytics or processing capabilities on the data it transmits.
 
-#### Security
+## Security
 - **End-to-End Application Security:** While NATS provides robust security features like TLS encryption, authentication, and authorization, it does not aim to be a comprehensive solution for end-to-end application security. The responsibility for securing the application layer, including the secure handling of data before it is published and after it is consumed, lies outside NATS’ scope.
 - **Full Compliance with All Data Privacy Regulations:** NATS provides mechanisms that can aid in complying with various data privacy regulations, but it is not designed to automatically ensure compliance with all such regulations (like GDPR, HIPAA). It's up to the users to configure and use NATS in a manner that meets the specific regulatory requirements of their domain.
 
 
-## Self-assessment use
+### Self-assessment use
 
-This self-assessment is created by the [project] team to perform an internal analysis of the
-project's security.  It is not intended to provide a security audit of [project], or
-function as an independent assessment or attestation of [project]'s security health.
+This self-assessment is created by the NATS team to perform an internal analysis of the project's security. It is not intended to provide a security audit of NATS, or function as an independent assessment or attestation of NATS's security health.
+This document serves to provide NATS users with an initial understanding of NATS's security, where to find existing security documentation, NATS plans for security, and general overview of NATS security practices, both for development of NATS as well as security of NATS.
+This document provides the CNCF TAG-Security with an initial understanding of NATS to assist in a joint-assessment, necessary for projects under incubation. Taken together, this document and the joint-assessment serve as a cornerstone for if and when NATS seeks graduation and is preparing for a security audit.
 
-This document serves to provide [project] users with an initial understanding of
-[project]'s security, where to find existing security documentation, [project] plans for
-security, and general overview of [project] security practices, both for development of
-[project] as well as security of [project].
 
-This document provides the CNCF TAG-Security with an initial understanding of [project]
-to assist in a joint-assessment, necessary for projects under incubation.  Taken
-together, this document and the joint-assessment serve as a cornerstone for if and when
-[project] seeks graduation and is preparing for a security audit.
 
-## Security functions and features
+### Security functions and features
 
-### Critical
+## Critical
 Critical security components of the project with a brief description of their importance. These are used for threat modeling and are considered critical design elements that make the product itself secure and are not configurable.
 
 - **TLS Encryption:** Ensures secure, encrypted connections.
@@ -186,9 +178,10 @@ Critical security components of the project with a brief description of their im
 - **Decentralized JWT Authentication/Authorization Administration:** Enables account holders to manage their users and authorizations independently.
 - **JetStream Persistence Layer:** Offers encryption at rest for stored data.
 
-### Security Relevant
+## Security Relevant
 NATS has achieved the passing level criteria in Open Source Security Foundation (OpenSSF) best practices badge. https://www.bestpractices.dev/en/projects/1895
 
+Threat modeling link: assessments/projects/nats/doc/threat-modeling.md
 
 - **Custom Authentication Integration:** Ability to integrate with existing authentication/authorization systems or create custom authentication.
 - **Server Configuration:** Configurable settings for user permissions, subject wildcards, and connection restrictions.
